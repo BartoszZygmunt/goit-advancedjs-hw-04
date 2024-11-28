@@ -20,6 +20,11 @@ export default function fetchPixabayImages(query) {
   fetch(url)
     .then(response => {
       if (!response.ok) {
+        iziToast.error({
+          title: 'Error',
+          message: 'Network response was not ok',
+          position: 'topCenter',
+        });
         throw new Error('Network response was not ok');
       }
       return response.json();
