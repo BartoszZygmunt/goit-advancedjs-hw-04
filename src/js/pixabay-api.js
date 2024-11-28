@@ -3,6 +3,8 @@ import renderImages from './render-functions.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import { lightbox } from '../main.js';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 
 export default function fetchPixabayImages(query) {
   const API = 'https://pixabay.com/api/';
@@ -10,6 +12,11 @@ export default function fetchPixabayImages(query) {
   const url = `${API}?key=${KEY}&q=${encodeURIComponent(
     query
   )}&image_type=photo&orientation=horizontal&safeSearch=true`;
+  NProgress.configure({
+    showSpinner: true,
+    trickleSpeed: 500,
+  });
+  NProgress.start();
   fetch(url)
     .then(response => {
       if (!response.ok) {
@@ -33,6 +40,7 @@ export default function fetchPixabayImages(query) {
       renderImages(data.hits);
       //odśwież lightbox
       lightbox.refresh();
+      NProgress.done();
     })
     .catch(error => {
       console.error('Error fetching images:', error);
