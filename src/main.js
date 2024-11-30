@@ -44,7 +44,7 @@ form.addEventListener('submit', event => {
   form.querySelector('input').value = '';
 });
 
-export function loadMoreButtonVisible(visible) {
+export function loadMoreButtonVisible(visible, topVisible = false) {
   const button = document.querySelector('#load-more');
   const buttonUp = document.querySelector('#to-top');
   if (visible == true) {
@@ -52,7 +52,11 @@ export function loadMoreButtonVisible(visible) {
     buttonUp.classList.remove('hidden');
   } else {
     button.classList.add('hidden'); // Ukrywa przycisk
-    buttonUp.classList.add('hidden'); // Ukrywa przycisk
+    if (topVisible == true) {
+      buttonUp.classList.remove('hidden'); // pokazuje przycisk
+    } else {
+      buttonUp.classList.add('hidden'); // Ukrywa przycisk
+    }
   }
 }
 

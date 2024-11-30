@@ -80,7 +80,7 @@ export default async function fetchPixabayImages(
         position: 'topCenter',
         timeout: 5000,
       });
-      loadMoreButtonVisible(false);
+      loadMoreButtonVisible(false, true); //zostawia widoczny przycisk scroll up
     }
 
     // Refresh SimpleLightbox - neccessary after adding new images
