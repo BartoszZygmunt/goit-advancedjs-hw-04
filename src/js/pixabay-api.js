@@ -4,8 +4,11 @@ import 'izitoast/dist/css/iziToast.min.css';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { lightbox } from '../main.js';
+import { loadMoreButtonVisible } from '../main.js';
 import renderImages from './render-functions.js';
 import handleFetchError from './handle-errors.js';
+
+export let totalImages = 0;
 
 //configure NProgress options
 NProgress.configure({
@@ -17,7 +20,8 @@ NProgress.configure({
 export default async function fetchPixabayImages(
   query,
   page,
-  clearImages = true
+  clearImages = true,
+  totalShowed = false
 ) {
   const PIXABAY_API_URL = 'https://pixabay.com/api/';
   const PIXABAY_API_KEY = import.meta.env.VITE_PIXABAY_API_KEY;
@@ -38,7 +42,11 @@ export default async function fetchPixabayImages(
 
     const responseData = response.data;
 
-    if (responseData.total === 0) {
+    if (page == 1) {
+      totalImages = responseData.totalHits;
+    }
+
+    if (responseData.total == 0) {
       iziToast.error({
         title: 'Error',
         message: 'No images found. Try another query.',
@@ -65,6 +73,15 @@ export default async function fetchPixabayImages(
     // Render images
     renderImages(responseData.hits);
     scrollDown();
+    if (totalShowed) {
+      iziToast.info({
+        title: 'Info',
+        message: `Total images found: ${totalImages}`,
+        position: 'topCenter',
+        timeout: 5000,
+      });
+      loadMoreButtonVisible(false);
+    }
 
     // Refresh SimpleLightbox - neccessary after adding new images
     lightbox.refresh();
@@ -82,5 +99,3 @@ const scrollDown = () => {
     behavior: 'smooth',
   });
 };
-
-

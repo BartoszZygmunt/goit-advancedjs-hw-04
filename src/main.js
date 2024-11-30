@@ -2,6 +2,7 @@ import fetchPixabayImages from './js/pixabay-api.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
+import { totalImages } from './js/pixabay-api.js';
 export let page = 1;
 let textToSearch = '';
 
@@ -46,7 +47,7 @@ form.addEventListener('submit', event => {
 export function loadMoreButtonVisible(visible) {
   const button = document.querySelector('#load-more');
   const buttonUp = document.querySelector('#to-top');
-  if (visible === true) {
+  if (visible == true) {
     button.classList.remove('hidden');
     buttonUp.classList.remove('hidden');
   } else {
@@ -59,7 +60,13 @@ export function loadMoreButtonVisible(visible) {
 const loadMoreButton = document.getElementById('load-more');
 loadMoreButton.addEventListener('click', () => {
   page += 1;
-  fetchPixabayImages(textToSearch, page, false);
+  console.log('page:', page);
+  console.log('totalImages:', totalImages);
+  if (page * 15 > totalImages) {
+    fetchPixabayImages(textToSearch, page, false, true);
+  } else {
+    fetchPixabayImages(textToSearch, page, false);
+  }
 });
 
 const clearGallery = () => {
