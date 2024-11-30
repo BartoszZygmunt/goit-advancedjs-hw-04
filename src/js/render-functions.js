@@ -1,9 +1,10 @@
 // renderowanie elementów na stronie
+import { loadMoreButtonVisible } from '../main.js';
 
 export default function renderImages(images) {
   const container = document.getElementById('images-container');
   images.forEach(image => {
-    console.log(image);
+    // console.log(image);
 
     const a = document.createElement('a'); // <a></a>
     a.href = image.largeImageURL;
@@ -50,8 +51,8 @@ export default function renderImages(images) {
 
     // dodaj do kontenera
     container.appendChild(a);
-    //lightbox.refresh();
   });
 
-  //   return container;
+  //after rendering images show load more button
+  loadMoreButtonVisible(true);
 }

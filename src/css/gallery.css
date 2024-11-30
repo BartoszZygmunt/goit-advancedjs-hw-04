@@ -118,3 +118,25 @@ body {
   letter-spacing: 0.04em;
   color: #2e2f42;
 }
+
+.hidden {
+  display: none;
+}
+
+.btn-more {
+  margin: 0 auto;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #4e75ff;
+  color: white;
+  cursor: pointer;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
