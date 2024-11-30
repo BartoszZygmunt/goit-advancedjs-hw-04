@@ -22,8 +22,7 @@ const form = document.querySelector('form');
 
 form.addEventListener('submit', event => {
   event.preventDefault();
-  //  diagnostyka
-  console.log('Obsługa zdarzenia submit została wywołana');
+
   // funkcja odczytu danych z api
   textToSearch = form.querySelector('input').value.trim();
   if (textToSearch === '') {
@@ -34,6 +33,7 @@ form.addEventListener('submit', event => {
       timeout: 2000,
     });
     loadMoreButtonVisible(false);
+    clearGallery(); //czyszczenie galerii
     return;
   }
   // funkcja odczytu danych z api pixabay
@@ -45,10 +45,13 @@ form.addEventListener('submit', event => {
 
 export function loadMoreButtonVisible(visible) {
   const button = document.querySelector('#load-more');
+  const buttonUp = document.querySelector('#to-top');
   if (visible === true) {
     button.classList.remove('hidden');
+    buttonUp.classList.remove('hidden');
   } else {
     button.classList.add('hidden'); // Ukrywa przycisk
+    buttonUp.classList.add('hidden'); // Ukrywa przycisk
   }
 }
 
@@ -56,5 +59,28 @@ export function loadMoreButtonVisible(visible) {
 const loadMoreButton = document.getElementById('load-more');
 loadMoreButton.addEventListener('click', () => {
   page += 1;
-  fetchPixabayImages(form.querySelector('input').value.trim(), page);
+  fetchPixabayImages(textToSearch, page, false);
+});
+
+const clearGallery = () => {
+  console.log('clearing gallery111');
+  const imagesContainer = document.getElementById('images-container');
+  if (imagesContainer) {
+    console.log('clearing gallery');
+    imagesContainer.innerHTML = '';
+  }
+};
+
+const scrollUp = () => {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth',
+  });
+};
+
+// button id="to-top" listener
+const buttonUp = document.getElementById('to-top');
+buttonUp.addEventListener('click', () => {
+  scrollUp();
 });

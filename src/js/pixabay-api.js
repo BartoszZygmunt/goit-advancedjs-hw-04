@@ -14,7 +14,11 @@ NProgress.configure({
 });
 
 //fetch images from Pixabay API with Axios
-export default async function fetchPixabayImages(query, page) {
+export default async function fetchPixabayImages(
+  query,
+  page,
+  clearImages = true
+) {
   const PIXABAY_API_URL = 'https://pixabay.com/api/';
   const PIXABAY_API_KEY = import.meta.env.VITE_PIXABAY_API_KEY;
   NProgress.start();
@@ -54,9 +58,14 @@ export default async function fetchPixabayImages(query, page) {
       NProgress.done();
       return;
     }
-    imagesContainer.innerHTML = '';
+    // Clear images container if clearImages is true
+    if (clearImages) {
+      imagesContainer.innerHTML = '';
+    }
     // Render images
     renderImages(responseData.hits);
+    scrollDown();
+
     // Refresh SimpleLightbox - neccessary after adding new images
     lightbox.refresh();
   } catch (error) {
@@ -65,3 +74,13 @@ export default async function fetchPixabayImages(query, page) {
     NProgress.done(); //finish NProgress visual effect - bar on top of the page
   }
 }
+
+const scrollDown = () => {
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    left: 0,
+    behavior: 'smooth',
+  });
+};
+
+
