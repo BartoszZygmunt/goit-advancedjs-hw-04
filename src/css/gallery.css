@@ -140,3 +140,9 @@ body {
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
 }
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin: 24px auto;
+}

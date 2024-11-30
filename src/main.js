@@ -3,12 +3,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
 export let page = 1;
-
-//sprawdzenie zmiennych środowiskowych
-console.log(
-  'Dostępne zmienne środowiskowe:',
-  import.meta.env.VITE_PIXABAY_API_KEY
-);
+let textToSearch = '';
 
 // Funkcja inicjująca SimpleLightbox
 export let lightbox; //zasięg globalny
@@ -24,13 +19,14 @@ function initializeLightbox() {
 initializeLightbox();
 
 const form = document.querySelector('form');
-const submitButton = form.querySelector('button[type="submit"]');
 
-submitButton.addEventListener('click', event => {
+form.addEventListener('submit', event => {
   event.preventDefault();
+  //  diagnostyka
+  console.log('Obsługa zdarzenia submit została wywołana');
   // funkcja odczytu danych z api
-  const input = form.querySelector('input').value.trim();
-  if (!input) {
+  textToSearch = form.querySelector('input').value.trim();
+  if (textToSearch === '') {
     iziToast.error({
       title: 'Error',
       message: 'Please fill out the form field.',
@@ -42,7 +38,9 @@ submitButton.addEventListener('click', event => {
   }
   // funkcja odczytu danych z api pixabay
   page = 1; //after new search reset page number
-  fetchPixabayImages(input, page);
+  fetchPixabayImages(textToSearch, page);
+  //delete input value
+  form.querySelector('input').value = '';
 });
 
 export function loadMoreButtonVisible(visible) {
@@ -54,7 +52,7 @@ export function loadMoreButtonVisible(visible) {
   }
 }
 
-//id="load-more" button event listener
+// loadmore - button event listener
 const loadMoreButton = document.getElementById('load-more');
 loadMoreButton.addEventListener('click', () => {
   page += 1;
